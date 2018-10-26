@@ -1,4 +1,4 @@
-# freeages
+# freeagues
 django website for the free phoenix leagues
 
 *just the git repo for a django site being developed on SourceLair*
