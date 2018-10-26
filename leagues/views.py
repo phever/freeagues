@@ -92,9 +92,11 @@ def modern(request):
         i += 1
         player.set_place(i)
     context = {
-        'player_list': player_list
+        'player_list': player_list,
+        'title': 'Modern League',
+        'table_header': 'Modern League Tables'
     }
-    return render(request, 'leagues/modern.html', context)
+    return render(request, 'leagues/league.html', context)
 
 
 def legacy(request):
@@ -107,15 +109,17 @@ def legacy(request):
                                                              player.player.nickname, player.wins, 0, player.player.dci)
 
     player_list = sorted(player_list.values(),
-                             key=lambda player: player.points, reverse=True)
+                         key=lambda player: player.points, reverse=True)
     i = 0
     for player in player_list[:]:
         i += 1
         player.set_place(i)
     context = {
-        'player_list': player_list
+        'player_list': player_list,
+        'title': 'Legacy League',
+        'table_header': 'Legacy League Tables'
     }
-    return render(request, 'leagues/legacy.html', context)
+    return render(request, 'leagues/league.html', context)
 
 
 def user_details(request, pk):
