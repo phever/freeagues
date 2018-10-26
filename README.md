@@ -10,8 +10,9 @@ git clone https://github.com/phever/freeagues.git
 cd freeagues
 ```
 
-#### create database
+#### create database & settings
 ```
+cp freeagues/example_settings_secrets.py freeagues/settings_secrets.py
 python manage.py migrate
 ```
 #### then either
