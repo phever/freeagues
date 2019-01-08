@@ -51,18 +51,19 @@ class EventRound:
 def index(request):
     modern_standings = StandingsRecord.objects.filter(event__format="Modern")
     legacy_standings = StandingsRecord.objects.filter(event__format="Legacy")
-    modern_players = {}
-    legacy_players = {}
+    cedh_standings = None
+    modern_players = []
+    legacy_players = []
+    cedh_players = []
     for standing in legacy_standings:
-        try:
-            legacy_players[standing.player.dci] = True
-        except KeyError:
-            pass
+        if not legacy_players.__contains__(standing.player.dci):
+            legacy_players.append(standing.player.dci)
     for standing in modern_standings:
-        try:
-            modern_players[standing.player.dci] = True
-        except KeyError:
-            pass
+        if not modern_players.__contains__(standing.player.dci):
+            modern_players.append(standing.player.dci)
+    #for standing in cedh_standings:
+    #    if not cedh_players.__contains__(standing.player.dci):
+    #        cedh_players.append(standing.player.dci)
     legacy_players = len(legacy_players)
     modern_players = len(modern_players)
     legacy_pool = len(legacy_standings)
@@ -92,16 +93,35 @@ def modern(request):
         i += 1
         player.set_place(i)
     context = {
-        'player_list': player_list,
-        'title': 'Modern League',
-        'table_header': 'Modern League Tables'
+        'player_list': player_list
     }
-    return render(request, 'leagues/league.html', context)
+    return render(request, 'leagues/modern.html', context)
 
 
 def legacy(request):
     player_list = {}
     for player in StandingsRecord.objects.filter(event__format="Legacy"):
+        try:
+            player_list[player.player.dci].add_points(player.wins)
+        except KeyError:
+            player_list[player.player.dci] = StandingsResult(player.player.first, player.player.last,
+                                                             player.player.nickname, player.wins, 0, player.player.dci)
+
+    player_list = sorted(player_list.values(),
+                             key=lambda player: player.points, reverse=True)
+    i = 0
+    for player in player_list[:]:
+        i += 1
+        player.set_place(i)
+    context = {
+        'player_list': player_list
+    }
+    return render(request, 'leagues/legacy.html', context)
+
+
+def cedh(request):
+    player_list = {}
+    for player in StandingsRecord.objects.filter(event__format="CEDH"):
         try:
             player_list[player.player.dci].add_points(player.wins)
         except KeyError:
@@ -115,11 +135,9 @@ def legacy(request):
         i += 1
         player.set_place(i)
     context = {
-        'player_list': player_list,
-        'title': 'Legacy League',
-        'table_header': 'Legacy League Tables'
+        'player_list': player_list
     }
-    return render(request, 'leagues/league.html', context)
+    return render(request, 'leagues/cedh.html', context)
 
 
 def user_details(request, pk):

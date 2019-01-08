@@ -17,29 +17,11 @@
     color: mediumblue;
 }
 
-.card {
-    border: solid white 1px;
-}
-
-body {
-    background-color: #646464;
-    color: #ffffff;
-}
-
-a {
-    color: #74a6ff;
-}
-
 tbody tr:nth-child(odd) {
-    background: #444444;
+    background: #EEE;
 }
 
 #list_title {
     padding-top: 2%;
-    color: white;
     text-align: center;
-}
-
-html {
-    background: #646464;
 }

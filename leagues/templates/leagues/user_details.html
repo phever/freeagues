@@ -1,31 +1,6 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-<head>
-    <meta name="theme-color" content="#646464">
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png'%}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png'%}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png'%}">
-    <link rel="manifest" href="{% static 'site.webmanifest'%}">
-    <link rel="mask-icon" href="{% static 'safari-pinned-tab.svg'%}" color="#5bbad5">
-    <link rel="shortcut icon" href="{% static 'favicon.ico'%}">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-config" content="{% static 'browserconfig.xml'%}">
-    <meta name="theme-color" content="#ffffff">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Phoenix Comics Leagues</title>
-    <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{% static 'leagues/style.css' %}"/>
-</head>
-<body>
-<!-- Compiled and minified JavaScript -->
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+{% extends 'base_generic.html' %}
 
+{% block content %}
 <div class="container">
     <div class="row">
         <div class="col s12">
@@ -33,12 +8,12 @@
         </div>
     </div>
     <div class="row">
-        <ul class="collection grey darken-3">
+        <ul class="collection">
             <div class="col s6 m4">
-                <li class="collection-item grey darken-3" id="topaccount">DCI: <strong>{{ account.dci }}</strong></li>
+                <li class="collection-item" id="topaccount">DCI: <strong>{{ account.dci }}</strong></li>
             </div>
             <div class="col s3 m4">
-                <li class="collection-item grey darken-3" id="topaccount"><a href="/modern" >MODERN LEAGUE</a>:
+                <li class="collection-item" id="topaccount"><a href="/modern" >MODERN LEAGUE</a>:
                     {% if modern_points > 0 %}
                         <i class="tiny material-icons">check_circle</i>
                     {% else %}
@@ -47,7 +22,7 @@
                 </li>
             </div>
             <div class="col s3 m4">
-                <li class="collection-item grey darken-3" id="topaccount"><a href="/legacy" >LEGACY LEAGUE</a>:
+                <li class="collection-item" id="topaccount"><a href="/legacy" >LEGACY LEAGUE</a>:
                     {% if legacy_points > 0 %}
                         <i class="tiny material-icons">check_circle</i>
                     {% else %}
@@ -73,32 +48,32 @@
 -->
     <div class="row">
         <div class="col s4">
-            <div class="card grey darken-3">
+            <div class="card">
                 <div class="card-content" id="centerme">Lifetime Points Average: <h5>{{ avg_points|floatformat:3 }}</h5></div>
             </div>
         </div>
         {% if legacy_points > 0 %}
         <div class="col s4">
-            <div class="card grey darken-3">
+            <div class="card">
                 <div class="card-content" id="centerme">Legacy Points Average: <h5>{{ legacy_points|floatformat:3 }}</h5></div>
             </div>
         </div>
         {% else %}
         <div class="col s4">
-            <div class="card grey darken-3">
+            <div class="card">
                 <div class="card-content" id="centerme">Legacy Points Average: <h5>No Events!</h5></div>
             </div>
         </div>
         {% endif %}
         {% if modern_points > 0 %}
         <div class="col s4">
-            <div class="card grey darken-3">
+            <div class="card">
                 <div class="card-content" id="centerme">Modern Points Average: <h5>{{ modern_points|floatformat:3 }}</h5></div>
             </div>
         </div>
         {% else %}
         <div class="col s4">
-            <div class="card grey darken-3">
+            <div class="card">
                 <div class="card-content" id="centerme">Modern Points Average: <h5>No Events!</h5></div>
             </div>
         </div>
@@ -110,14 +85,13 @@
     <div class="row">
         {% for event in events %}
             <div class="col s6 m3 l2">
-                    <ul class="collection  with-header hoverable">
-                        <li class="collection-header grey darken-3"><a href="/user/{{ account.dci }}/{{ event.event.pk }}" ><h5>{{ event.event.format }}</h5> <h6>{{ event.event.date }}</h6></a></li>
-                        <li class="collection-item grey darken-3">{{ event.points }} points</li>
-                        <li class="collection-item grey darken-3">{{ event.wins }} wins</li>
+                    <ul class="collection with-header hoverable">
+                        <li class="collection-header"><a href="/user/{{ account.dci }}/{{ event.event.pk }}" ><h5>{{ event.event.format }}</h5> <h6>{{ event.event.date }}</h6></a></li>
+                        <li class="collection-item">{{ event.points }} points</li>
+                        <li class="collection-item">{{ event.wins }} wins</li>
                     </ul>
                 </div>
         {% endfor %}
     </div>
 </div>
-</body>
-</html>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'site.webmanifest' %}">
+    <link rel="mask-icon" href="{% static 'safari-pinned-tab.svg' %}" color="#5bbad5">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+    <meta name="msapplication-config" content="{% static 'browserconfig.xml' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Phoenix Comics Leagues</title>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/css/uikit.min.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'leagues/style.css' %}"/>
+</head>
+
+<body>
+<!-- Compiled and minified JavaScript -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit-icons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+{% block sidebar %}
+    <div class="navbar-fixed" style="padding-bottom: 4%">
+        <nav>
+            <div class="nav-wrapper">
+                <a href="/" class="brand-logo" style="padding-left: 1%">Phoenix Comics Leagues</a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="/modern">Modern</a></li>
+                    <li><a href="/legacy">Legacy</a></li>
+                    <li><a href="/cedh">CEDH</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block content %}{% endblock %}
+{% block extra_js %}{% endblock extra_js %}
+</body>
+</html>
