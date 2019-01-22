@@ -1,135 +1,78 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col s12 m10 offset-m1">
-            <div class="card">
-                <div class="card-content">
-                    <span class="card-title" style="text-align: center">What are Phoenix Leagues?</span>
-                    <p style="text-align: center"><a href="https://www.facebook.com/PhoenixComics/">Phoenix
-                        Comics NW</a> likes to add a little bit more excitement and competition to their weekly
-                        events. Every night you show up to play you earn points that count towards your final score! If
-                        you're
-                        interested in learning more please let us know in store or over Facebook!</p>
-                    <br>
-                    <p style="text-align: center">Current Leagues started on the 3rd (Legacy), 7th (Modern) and 9th
-                        (CEDH) of January and will run for 8 weeks.</p>
-                </div>
-            </div>
-        </div>
+  <header class="masthead bg-primary text-white text-center">
+    <div class="container">
+      <h1 class="text-center text-white">What are Phoenix Leagues?</h1>
+      <hr class="star-light">
+      <h4 class="text-center text-white"><a class="text-white" href="https://www.facebook.com/PhoenixComics/" target="_blank">Phoenix Comics NW</a> likes to add a little bit more excitement and competition to their weekly events.</h4>
+      <h6>Every night you show up to play you earn points that count towards your final score (at no additional cost / you do NOTHING)! If you're interested in learning more please let us know in store or over <a class="text-secondary" href="https://www.facebook.com/PhoenixComics/" target="_blank">Facebook!</a></h6>
     </div>
-    <div class="row">
-        <div class="col s12 m8 offset-m2">
-            <div class="card">
-                <div class="card-tabs">
-                    <ul class="tabs">
-                        <li class="tab"><a href="#modernlegacy">Modern / Legacy Point Payouts</a></li>
-                        <li class="tab"><a href="#cedh">Competitve EDH Payouts</a></li>
-                    </ul>
-                </div>
-                <div class="card-content">
-                    <div id="modernlegacy">
-                        <table class="responsive-table centered">
-                            <thead>
-                            <tr>
-                                <th>Record</th>
-                                <th>Points</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>4 Wins</td>
-                                <td>6 Points</td>
-                            </tr>
-                            <tr>
-                                <td>3 Wins</td>
-                                <td>4 Points</td>
-                            </tr>
-                            <tr>
-                                <td>2 Wins</td>
-                                <td>2 Points</td>
-                            </tr>
-                            <tr>
-                                <td><strong>I showed up!</strong></td>
-                                <td><strong>1 Point!</strong></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div id="cedh">
-                        <table class="responsive-table centered">
-                            <thead>
-                            <tr>
-                                <th>Record</th>
-                                <th>Points</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>2 Wins</td>
-                                <td>8 Points</td>
-                            </tr>
-                            <tr>
-                                <td>1 Win</td>
-                                <td>4 Points</td>
-                            </tr>
-                            <tr>
-                                <td><strong>I showed up!</strong></td>
-                                <td><strong>1 Point!</strong></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col s12 m10 offset-m1">
-            <div class="card">
-                <div class="card-content" id="centerme">
-                    <span class="card-title">Current Payouts:</span>
-                    <p>We add $1 worth of prizing for every player in our Monday (Modern),  Tuesday (Competitive EDH) and Thursday (Legacy) events! Currently
-                        that's:</p>
-                    <h5>${{ modpool|default:0 }} <em>Modern</em> prize pool ({{ modern_players|default:0 }} unique players)</h5>
-                    <h5>${{ legpool|default:0 }} <em>Legacy</em> prize pool ({{ legacy_players|default:0 }} unique players)</h5>
-                    <h5>${{ cedhpool|default:0 }} <em>CEDH</em> prize pool ({{ cedh_players|default:0 }} unique players)</h5>
-                </div>
-            </div>
-        </div>
-    </div>
+  </header>
 
-    <div class="row">
-        <div class="col s12 m10 offset-m1">
-            <div class="card">
-                <div class="card-content" id="centerme">
-                    <span class="card-title">Prizing Breakdowns:</span>
-                    <br>
-                    <h5>Prizing structure determined by the total number of unique players!</h5>
-                </div>
-                <div class="card-tabs">
-                    <ul class="tabs">
-                        <li class="tab"><a href="#7to12">7-12</a></li>
-                        <li class="tab"><a href="#13to19">13-19</a></li>
-                        <li class="tab"><a href="#20to29">20-29</a></li>
-                        <li class="tab"><a href="#30to39">30-39</a></li>
-                        <li class="tab"><a href="#40to49">40-49</a></li>
-                        <li class="tab"><a href="#50to59">50-59</a></li>
-                        <li class="tab"><a href="#60to69">60-69</a></li>
-                        <li class="tab"><a href="#70to79">70-79</a></li>
-                        <li class="tab"><a href="#80to100">80-100</a></li>
-                        <li class="tab"><a href="#101to119">101-119</a></li>
-                        <li class="tab"><a href="#120to139">120-139</a></li>
-                    </ul>
-                </div>
-                <div class="card-content">
-                    <div id="#7-12">
-                        <p>To Be Determined of course!</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <section id="points" class="text-center">
+    <div class="container">
+      <h3>How many points do I win?</h3>
+      <hr class="star-dark">
+      <h5>Modern / Legacy</h5>
+      <table class="table table-borderless">
+        <thead>
+          <tr>
+            <th scope="col">Number of wins:</th>
+            <th scope="col">Points Earned</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">4 Wins</th>
+            <td>6 Points</td>
+          </tr>
+          <tr>
+            <th scope="row">3 Wins</th>
+            <td>4 Points</td>
+          </tr>
+          <tr>
+            <th scope="row">2 Wins</th>
+            <td>2 Points</td>
+          </tr>
+          <tr>
+            <th scope="row">Less than 2 Wins</th>
+            <td>1 Point</td>
+          </tr>
+        </tbody>
+      </table>
+      <hr>
+      <h5>Competitive Commander (EDH)</h5>
+      <p>Our CEDH are hosted by DSC_1, and work a little bit different for calculating points.</p>
+      <table class="table table-borderless">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Points Earned</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">I won the "winners" round</th>
+            <td>1 Additional Point</td>
+          </tr>
+          <tr>
+            <th scope="row">I won the round!</th>
+            <td>1 Point Per Player (at your table)</td>
+          </tr>
+          <tr>
+            <th scope="row">I showed up!</th>
+            <td>1 Point</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-</div>
+  </section>
+
+  <section id="payouts" class="bg-primary text-white mb-0 text-center">
+    <div class="container">
+      <h1>Payout$</h1>
+      <hr class="star-light">
+    </div>
+  </section>
 {% endblock %}

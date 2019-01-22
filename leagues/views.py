@@ -93,6 +93,7 @@ def modern(request):
         i += 1
         player.set_place(i)
     context = {
+        'league_name': 'Modern League',
         'player_list': player_list
     }
     return render(request, 'leagues/modern.html', context)

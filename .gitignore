@@ -1,4 +1,4 @@
-freeagues/settings_secrets.py
+freeagues/secrets.py
 /static/
 
 .ebextensions/
