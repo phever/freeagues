@@ -1,8 +1,6 @@
 freeagues/secrets.py
 /static/
 
-.ebextensions/
-.elasticbeanstalk/
 .idea/
 
 ##

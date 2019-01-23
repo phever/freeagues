@@ -1,5 +1,10 @@
 from django.db import models
 
+# Formats, with a "Code" followed by a readable name, for the CharField.choices
+FORMATS = {('LEG', 'Legacy'),
+           ('MOD', 'Modern'),
+           ('CEDH', 'Competitive EDH')}
+
 
 class Player(models.Model):
     dci = models.IntegerField(primary_key=True)
@@ -10,106 +15,54 @@ class Player(models.Model):
     def __str__(self):
         return str.format("{} {} ({})", self.first, self.last, self.dci)
 
+    def name(self):
+        return str.format("{} {}", self.first, self.last)
 
-class EventRecord(models.Model):
-    data = models.FileField()
-    format = models.CharField(max_length=30)
+
+class Event(models.Model):
+    format = models.CharField(max_length=5, choices=FORMATS)
     date = models.DateField()
 
     def __str__(self):
         return str.format("{} - {}", self.date.strftime("%A %B %d, %Y"), self.format)
 
-    def save(self, *args, **kwargs):
-        import xml.etree.ElementTree as Et
-        super(EventRecord, self).save(self, *args, **kwargs)
-        tree = Et.parse(self.data)
-        root = tree.getroot()
-        dictionary_players = {}
 
-        for event in root:
-            participation = event.find('participation')
-            for x in participation.findall('person'):
-                dci = x.get('id')
-                first = x.get('first')
-                last = x.get('last')
-                dictionary_players[int(dci)] = 0
-                p, created = Player.objects.get_or_create(dci=dci, first=first, last=last)
-                if created:
-                    p.save()
-
-            matches = event.find('matches')
-            for round_of_magic in matches:
-                round_number = round_of_magic.get('number')
-                for match_of_magic in round_of_magic:
-                    player = Player.objects.get(pk=match_of_magic.get('person'))
-                    opp = match_of_magic.get('opponent')
-                    pwins = match_of_magic.get('win')
-                    draws = match_of_magic.get('draw')
-                    oppwins = match_of_magic.get('loss')
-                    outcome = match_of_magic.get('outcome')
-                    m, created = Match.objects.get_or_create(player=player, opp=opp, pwins=pwins, draws=draws,
-                                                             oppwins=oppwins, outcome=outcome,
-                                                             roundNumber=round_number,
-                                                             event=self)
-                    if outcome is "1" or outcome is "3":
-                        dictionary_players[int(player.dci)] += 1
-                    elif outcome is "2":
-                        pass
-                    else:
-                        print("ruh roh raggy")
-                    if created:
-                        m.save()
-
-        for dci, dude in dictionary_players.items():
-            def calc_points(wins):
-                if wins < 2:
-                    points = 1
-                elif wins == 2:
-                    points = 2
-                elif wins == 3:
-                    points = 4
-                elif wins == 4:
-                    points = 6
-                else:
-                    points = 99999
-                return points
-
-            player = Player.objects.get(dci=dci)
-            event = self
-            wins = dude
-            s, created = StandingsRecord.objects.get_or_create(player=player, event=event, wins=wins, points=calc_points(wins))
-            if created:
-                s.save()
+class Round(models.Model):
+    round_number = models.PositiveSmallIntegerField()
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
 
 
 class Match(models.Model):
-    player = models.ForeignKey(Player, on_delete=models.SET_NULL, null=True)
-    opp = models.IntegerField(null=True)
-    pwins = models.SmallIntegerField(null=True)
-    draws = models.SmallIntegerField(null=True)
-    oppwins = models.SmallIntegerField(null=True)
-    outcome = models.SmallIntegerField()
-    roundNumber = models.SmallIntegerField()
-    event = models.ForeignKey(EventRecord, on_delete=models.CASCADE)
+    player_1 = models.ForeignKey(Player, on_delete=models.PROTECT, null=True, blank=True, related_name='p1')
+    player_2 = models.ForeignKey(Player, on_delete=models.PROTECT, null=True, blank=True, related_name='p2')
+    p1_wins = models.PositiveSmallIntegerField(null=True)
+    p2_wins = models.PositiveSmallIntegerField(null=True)
+    draws = models.PositiveSmallIntegerField(null=True)
+    outcome = models.PositiveSmallIntegerField()
+    round = models.ForeignKey(Round, on_delete=models.CASCADE)
+
+
+class League(models.Model):
+    format = models.CharField(max_length=5, choices=FORMATS)
+    date_started = models.DateField()
+    number_of_events = models.PositiveSmallIntegerField()
 
     def __str__(self):
-        try:
-            opplastname = Player.objects.get(pk=self.opp).last
-        except Player.DoesNotExist:
-            opplastname = "got a bye"
-        if opplastname is "got a bye":
-            return str.format("{} {} - {} {}", self.player.last, opplastname, self.event.date.strftime("%a %b %d"),
-                              str(self.event.format))
-        else:
-            return str.format("{} vs. {} - {} {}", self.player.last, opplastname, self.event.date.strftime("%a %b %d"),
-                              str(self.event.format))
+        return str.format("{format} League - {date}",
+                          format=self.format,
+                          date=self.date_started.strftime("%b %-d %Y"))
 
 
-class StandingsRecord(models.Model):
+class EventResult(models.Model):
+    league = models.ForeignKey(League, on_delete=models.CASCADE)
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    event = models.ForeignKey(EventRecord, on_delete=models.CASCADE)
-    wins = models.SmallIntegerField(default=0)
-    points = models.SmallIntegerField(default=0)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    date = models.DateField()
+    points = models.PositiveSmallIntegerField(default=0)
 
-    def __str__(self):
-        return str.format("{} won {} - {}", self.player.last, self.wins, self.event.date.strftime("%b %d"))
+
+class CedhResult(models.Model):
+    league = models.ForeignKey(League, on_delete=models.CASCADE)
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    date = models.DateField()
+    points = models.PositiveSmallIntegerField()
