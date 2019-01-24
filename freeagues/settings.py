@@ -111,3 +111,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = 'static'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+import django_heroku
+django_heroku.settings(locals())
