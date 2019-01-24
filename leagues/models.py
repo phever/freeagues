@@ -50,7 +50,7 @@ class League(models.Model):
     def __str__(self):
         return str.format("{format} League - {date}",
                           format=self.format,
-                          date=self.date_started.strftime("%b %-d %Y"))
+                          date=self.date_started.strftime("%b %d %Y"))
 
 
 class EventResult(models.Model):
