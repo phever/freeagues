@@ -62,18 +62,21 @@ def index(request):
     modern_event_results = EventResult.objects.filter(league__format='MOD')
     legacy_event_results = EventResult.objects.filter(league__format='LEG')
     cedh_event_results = EventResult.objects.filter(league__format='CEDH')
-    modern = FormatsForIndex(format_name='Modern',
+    if modern_event_results:
+        modern = FormatsForIndex(format_name='Modern',
                              prize_pool=len(modern_event_results),
                              players=len(get_unique_players(modern_event_results)))
-    legacy = FormatsForIndex(format_name='Legacy',
+        payouts.append(modern)
+    if legacy_event_results:
+        legacy = FormatsForIndex(format_name='Legacy',
                              prize_pool=len(legacy_event_results),
                              players=len(get_unique_players(legacy_event_results)))
-    cedh = FormatsForIndex(format_name='Competitive EDH',
+        payouts.append(legacy)
+    if cedh_event_results:
+        cedh = FormatsForIndex(format_name='Competitive EDH',
                              prize_pool=len(cedh_event_results),
                              players=len(get_unique_players(cedh_event_results)))
-    payouts.append(modern)
-    payouts.append(legacy)
-    payouts.append(cedh)
+        payouts.append(cedh)
     context = {
         'payouts': payouts
     }
