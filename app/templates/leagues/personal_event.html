@@ -1,0 +1,81 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    <header class="masthead bg-primary text-white text-center">
+        <div class="container">
+            <div class="row m-4">
+                <h5>Currently Viewing:</h5>
+            </div>
+            <div class="row">
+                <h2>{{ event }}</h2>
+            </div>
+            <!--
+            <div class="row">
+                <a class="text-white" href="/event/{{ event.event.pk }}">Click here to see the entire event.</a>
+            </div>
+            --->
+            <div class="row">
+                <a class="text-white" href="/player/{{ player.dci }}">Click here to see the player's stats.</a>
+            </div>
+        </div>
+    </header>
+
+    <section>
+        <div class="container">
+            <div class="row m-2">
+                <h3>Matches:</h3>
+            </div>
+            <div class="row">
+                {% for match in matches %}
+                    <div class="col-sm-6">
+                        {% if match.player_1 == player %}
+                            <card class="card text-center mb-4 {% if match.outcome == 1 or match.outcome == 3 %}border-success{% elif match.outcome == 2 %}border-info{% endif %}">
+                                <div class="card-header">Round {{ match.round.round_number }}</div>
+                                {% if match.player_2 %}
+                                    <div class="card-body">
+                                        <h5 class="card-title {% if match.outcome == 1 %}text-success{% elif match.outcome == 2 %}text-info{% endif %}">
+                                            <a href="/player/{{ match.player_1.dci }}"
+                                               class="{% if match.outcome == 1 %}text-success{% elif match.outcome == 2 %}text-info{% endif %}">{{ match.player_1.first }} {{ match.player_1.last }}</a>
+                                            vs.
+                                            <a href="/player/{{ match.player_2.dci }}"
+                                               class="{% if match.outcome == 1 %}text-success{% elif match.outcome == 2 %}text-info{% endif %}">{{ match.player_2.first }} {{ match.player_2.last }}</a>
+                                        </h5>
+                                    </div>
+                                    <div class="card-footer {% if match.outcome == 1 or match.outcome == 3 %}text-success{% elif match.outcome == 2 %}text-info{% endif %}">
+                                        <strong>{{ match.p1_wins }} / {{ match.p2_wins }} / {{ match.draws }}</strong>
+                                    </div>
+                                {% else %}
+                                    <div class="card-body">
+                                        <h5 class="card-title text-success">
+                                            <a href="/player/{{ match.player_1.dci }}"
+                                               class="text-success">{{ match.player_1.first }} {{ match.player_1.last }}</a> crushed the bye
+                                        </h5>
+                                    </div>
+                                    <div class="card-footer text-success">
+                                        <i class="far fa-laugh"></i>
+                                    </div>
+                                    </card>
+                                {% endif %}
+                        {% else %}
+                            <card class="card text-center mb-4 {% if match.outcome == 1 or match.outcome == 3 %}border-danger{% elif match.outcome == 2 %}border-info{% endif %}">
+                                <div class="card-header">Round {{ match.round.round_number }}</div>
+                                <div class="card-body {% if match.outcome == 1 or match.outcome == 3 %}text-danger{% elif match.outcome == 2 %}text-info{% endif %}">
+                                    <h5 class="card-title">
+                                        <a href="/player/{{ match.player_1.dci }}"
+                                           class="{% if match.outcome == 1 or match.outcome == 3 %}text-danger{% elif match.outcome == 2 %}text-info{% endif %}">{{ match.player_1.first }} {{ match.player_1.last }}</a>
+                                        vs.
+                                        <a href="/player/{{ match.player_2.dci }}"
+                                           class="{% if match.outcome == 1 or match.outcome == 3 %}text-danger{% elif match.outcome == 2 %}text-info{% endif %}">{{ match.player_2.first }} {{ match.player_2.last }}</a>
+                                    </h5>
+                                </div>
+                                <div class="card-footer {% if match.outcome == 1 or match.outcome == 3 %}text-danger{% elif match.outcome == 2 %}text-info{% endif %}">
+                                    <strong>{{ match.p1_wins }} / {{ match.p2_wins }} / {{ match.draws }}</strong>
+                                </div>
+                            </card>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

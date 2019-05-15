@@ -1,0 +1,43 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <header class="masthead text-center">
+    <h1>{{ league_name }}</h1>
+  </header>
+  <div class="container">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>League Ranking</th>
+          <th>Name</th>
+          <th>Last Event Points</th>
+          <th>Total Points</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for player in player_list %}
+          <tr>
+            <td>
+              <strong>{{ player.standing }}</strong> {% if player.ranking_moved == 0 %}<i class="far fa-circle"></i>{% elif player.ranking_moved == -1 %}<i class="fas fa-chevron-down"></i>{% elif player.ranking_moved == 1 %}<i class="fas fa-chevron-up"></i>{% endif %}
+            </td>
+            <td>
+                <strong><a href="/player/{{ player.dci }}" >{{ player.first }} {% if player.nickname %}"{{ player.nickname }}"{% endif %} {{ player.last }}</a></strong>
+            </td>
+            <td>
+                <small>{% if player.weeks_points != 0 %}{{ player.weeks_points }}{% else %}Missed it!{% endif %}</small>
+            </td>
+            <td>
+                <b>{{ player.points }}</b>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="container d-none d-xl-block">
+      <div id="list_title">
+        <p>See updated leagues anytime at: <strong><a href="/">leagues.phoenixcomics.ca</a></strong></p>
+      </div>
+  </div>
+{% endblock %}
