@@ -1,0 +1,83 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    <header class="masthead bg-primary text-white text-center">
+        <div class="container">
+            <div class="row m-4">
+                <h1>{{ player.first }} {{ player.last }}</h1>
+            </div>
+            {% if player.nickname %}
+                <div class="row m-2">
+                    <h4>"{{ player.nickname }}"</h4>
+                </div>
+            {% endif %}
+            <div class="row ml-5">
+                <h3>DCI: {{ player.dci }}</h3>
+            </div>
+            <div class="row text-dark">
+                {% if modern %}
+                    <div class="col-sm-4">
+                        <div class="card text-center mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Current Modern League</h5>
+                                <p class="card-text">{{ modern.points }} point(s). #{{ modern.ranking }} overall.</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if legacy %}
+                    <div class="col-sm-4">
+                        <div class="card text-center mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Current Legacy League</h5>
+                                <p class="card-text">{{ legacy.points }} point(s). #{{ legacy.ranking }} overall.</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if cedh %}
+                    <div class="col-sm-4">
+                        <div class="card text-center mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Current CEDH League</h5>
+                                <p class="card-text">{{ cedh.points }} point(s). #{{ cedh.ranking }} overall.</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+    <section>
+        <div class="container">
+            <div class="row m-2">
+                <h3>Recent Events:</h3>
+            </div>
+            <div class="row">
+                {% for event in events %}
+                    <div class="col-sm-6">
+                    {% if event.format == 'Competitive EDH' %}
+                        <a class="card text-center mb-4">
+                    {% else %}
+                        <a class="card text-center mb-4" href="result/{{ event.id }}">
+                        {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ event.format }} ({{ event.date }})</h5>
+                                {% if event.format == 'Competitive EDH' %}
+                                    <p class="card-text">{% if event.played_both %}Played both games.{% else %}Played 1
+                                        game.{% endif %}</p>
+                                {% else %}
+                                    <p class="card-text">Went {{ event.wins }} / {{ event.losses }}
+                                        / {{ event.draws }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="card-footer text-muted">
+                                {{ event.points }} point(s).
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

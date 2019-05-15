@@ -1,0 +1,52 @@
+{% extends 'base_generic.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <header class="masthead bg-primary text-white text-center">
+    <div class="container">
+      <h3>Upload from WER Results</h3>
+      <p>The file must be the full details of the event, not just the standings at the end.</p>
+      <form enctype="multipart/form-data" action="/uploads" method="post">
+        {% csrf_token %}
+        {{ upload_form|crispy }}
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+  </header>
+
+  <section class="text-center">
+    <div class="container">
+      <h3>CEDH Result Builder</h3>
+      <form enctype="multipart/form-data" action="/upload-cedh" method="post">
+        {% csrf_token %}
+        {{ cedh_form|crispy }}
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+  </section>
+
+  <section class="bg-primary text-white text-center">
+    <div class="container">
+      <h3>Player Creator (for CEDH)</h3>
+      <p>The DCI's don't have to be correct, but they MUST be unique. So it's probably best to use their actual DCI
+        unless they don't have one.</p>
+      <form enctype="multipart/form-data" action="/upload-player" method="post">
+        {% csrf_token %}
+        {{ player_form|crispy }}
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+  </section>
+
+  <section class="text-center">
+    <div class="container">
+      <h3>League Creator</h3>
+      <form enctype="multipart/form-data" action="/upload-new-league" method="post">
+        {% csrf_token %}
+        {{ new_league_form|crispy }}
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+  </section>
+{% endblock %}

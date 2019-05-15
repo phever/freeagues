@@ -1,0 +1,40 @@
+{% extends 'leagues/generic_base.html' %}
+{% block content %}
+<div class="container">
+	<h1>{{ table_header }}</h1>
+	<div class="container">
+	<table class="table">
+		<thead>
+      <tr>
+    		<th>#</th>
+    		<th>Name</th>
+    		<th>Points</th>
+			</tr>
+		</thead>
+		<tbody>
+{% for player in player_list %}
+    <tr>
+        <td>
+            <strong>{{ player.place }}</strong>
+        </td>
+    <td>
+        <strong><a href="/user/{{ player.dci }}/">{{ player.first }} {% if player.nickname %}<q style="font-size: smaller">{{ player.nickname }}</q>{% endif %} {{ player.last }}</a></strong>
+    </td>
+    <td>
+        {{ player.points }}
+    </td>
+    </tr>
+{% endfor %}
+</tbody>
+</table></div></div>
+<div class="container">
+    <div class="uk-hidden-touch">
+        <div id="list_title">
+            <p>See updated leagues anytime at: <strong><a href="/">leagues.phoenixcomics.ca</a></strong></p>
+        </div>
+    </div>
+
+</body>
+</html>
+</div>
+{% endblock %}

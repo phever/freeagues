@@ -1,0 +1,22 @@
+{% extends 'base_generic.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <header class="masthead bg-primary text-white text-center">
+    <div class="container">
+      <h3>Past Leagues</h3>
+      <p>More staaaats.</p>
+    </div>
+  </header>
+
+  <section class="text-center">
+    <div class="container">
+      {% for league in old_leagues %}
+        <div class="row justify-content-center">
+          <h1><a href="/old-events{{ league.convert_to_url }}/{{ league.pk }}">{{ league }}</a></h1>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}

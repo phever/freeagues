@@ -1,0 +1,127 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <header class="masthead bg-primary text-white text-center">
+    <div class="container">
+      <h1 class="text-center text-white">What are Phoenix Leagues?</h1>
+      <hr class="star-light">
+      <h4 class="text-center text-white"><a class="text-white" href="https://www.facebook.com/PhoenixComics/" target="_blank">Phoenix Comics NW</a> likes to add a little bit more excitement and competition to their weekly events.</h4>
+      <h6>Every night you show up to play during a League, you will earn points that count towards your final score. Being a part of the League costs nothing extra and is done automatically!</h6>
+      <h6>Keep reading if you're interested in learning more. Or chat with us in store or over <a class="text-secondary" href="https://www.facebook.com/PhoenixComics/" target="_blank">Facebook!</a></h6>
+      <hr class="star-light">
+      {% if running_leagues %}<h4 class="text-center text-white p-2">Currently running Leagues:</h4>
+        {% for league in running_leagues %}
+          <h1>{{ league.convert_fmt }} {{ league.print_weekday }}!</h1>
+        {% endfor %}
+      {% endif %}
+      {% if future_leagues %}<h4 class="text-center text-white p-2">Upcoming Leagues:</h4>
+        {% for league in future_leagues %}
+          <h1>{{ league.convert_fmt }} League</h1><p>Starting {{ league.date_started }}</p>
+        {% endfor %}
+      {% endif %}
+    {% if not running_leagues and not future_leagues %}<h3>Nothing running and nothing coming up... <i class="fas fa-sad-tear"></i> Let us know you want more!</h3>{% endif %}
+    </div>
+  </header>
+
+  <section id="points" class="text-center">
+    <div class="container">
+      <h3>How many points do I win?</h3>
+      <hr class="star-dark">
+      <h5>60-Card Formats (Standard, Modern, Legacy...)</h5>
+      <table class="table table-borderless">
+        <thead>
+          <tr>
+            <th scope="col">Number of wins:</th>
+            <th scope="col">Points Earned</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">4 Wins</th>
+            <td>6 Points</td>
+          </tr>
+          <tr>
+            <th scope="row">3 Wins</th>
+            <td>4 Points</td>
+          </tr>
+          <tr>
+            <th scope="row">2 Wins</th>
+            <td>2 Points</td>
+          </tr>
+          <tr>
+            <th scope="row">Less than 2 Wins</th>
+            <td>1 Point</td>
+          </tr>
+        </tbody>
+      </table>
+      <hr>
+      <h5>Competitive Commander (EDH)</h5>
+      <p>Our CEDH are hosted by DSC1, and work a little bit different for calculating points! The main way to earn points is by winning your tables' 3-5 player game.</p>
+      <table class="table table-borderless">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Points Earned</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">I won the "winners" round</th>
+            <td>1 Additional Point</td>
+          </tr>
+          <tr>
+            <th scope="row">I won the round!</th>
+            <td>1 Point Per Player (at your table)</td>
+          </tr>
+          <tr>
+            <th scope="row">I showed up!</th>
+            <td>1 Point</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="payouts" class="bg-primary text-white mb-0 text-center">
+    <div class="container">
+      <h1>Payout$</h1>
+      <hr class="star-light">
+      <div class="row">
+        <div class="col-lg-6 m-auto">
+          <p class="lead">For each person that signs up for a <span class="font-weight-bold">League Event</span>, we add $1 to that League's Prize Pool!</p>
+          {% if payouts %}
+            <table class="table table-borderless">
+              <thead>
+              <tr>
+                <th scope="col">Format</th>
+                <th scope="col">Unique Players</th>
+                <th scope="col">Current Prize Pool</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for format in payouts %}
+                <tr>
+                  <th scope="row">{{ format.format_name }}</th>
+                  <th scope="row">{{ format.players }}</th>
+                  <th scope="row">${{ format.prize_pool }}</th>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+            <h3>No Currently running Leagues! <i class="fas fa-sad-tear"></i></h3>
+          {% endif %}
+          <p class="lead">Payouts will be determined based on attendance, past Leagues have paid out to top 3, with 10%
+            of the prize pool going to a "hidden prize" (usually who can beat the most employees at events)! Talk to us
+            in store if you have any additional questions!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+    <footer class="bg-primary text-white text-center">
+        <div>Site made with <i class="far fa-kiss-wink-heart"></i> by
+          <label for="mike-link" hidden>sendto:mike.pnnr@gmail.com</label>
+            <a class="text-white" id="mike-link" href="https://youtu.be/-xKM3mGt2pE?t=14">Mike Penner</a>
+        </div>
+    </footer>
+{% endblock %}
