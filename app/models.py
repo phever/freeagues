@@ -6,7 +6,8 @@ from django.db import models
 FORMATS = {('LEG', 'Legacy'),
            ('MOD', 'Modern'),
            ('CEDH', 'Competitive EDH'),
-           ('STD', 'Standard')}
+           ('STD', 'Standard'),
+           ('PIO', 'Pioneer')}
 
 
 class Player(models.Model):
@@ -79,6 +80,8 @@ class League(models.Model):
             return 'Competitve EDH'
         elif self.format == 'STD':
             return 'Standard'
+        elif self.format == 'PIO':
+            return 'Pioneer'
         else:
             return 'ERROR'
 
@@ -91,6 +94,8 @@ class League(models.Model):
             return '/cedh'
         elif self.format == 'STD':
             return '/standard'
+        elif self.format == 'PIO':
+            return '/pioneer'
         else:
             return '/404'
 

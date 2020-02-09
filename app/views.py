@@ -133,6 +133,8 @@ def get_sixty_card_event_cards(my_events):
             return 'Legacy'
         elif fmt == 'CEDH':
             return 'Competitve EDH'
+        elif fmt == 'PIO':
+            return 'Pioneer'
         else:
             return 'ERROR'
 
@@ -165,6 +167,8 @@ def get_cedh_event_cards(my_cedh_events):
             return 'Legacy'
         elif fmt == 'CEDH':
             return 'Competitive EDH'
+        elif fmt == 'PIO':
+            return 'Pioneer'
         else:
             return 'ERROR'
 
@@ -202,7 +206,7 @@ def index_view(request):
     all_leagues = League.objects.all()
     today = datetime.date.today()
     for league in all_leagues:
-        date_ended = league.date_started + datetime.timedelta(days=league.number_of_events*7)
+        date_ended = league.date_started + datetime.timedelta(days=league.number_of_events * 7)
         if date_ended >= today >= league.date_started:
             running_leagues.append(league)
         elif date_ended < today:
@@ -307,9 +311,35 @@ def old_standard_view(request, pk):
     return render(request, 'leagues/standings.html', context)
 
 
+def pioneer_view(request):
+    league = League.objects.filter(format='PIO').order_by('-date_started').first()
+    # add if league.date + league.number_of_events to see if it's currently ongoing
+    player_list = get_standings(league)
+
+    context = {
+        'league_name': 'Pioneer Standings',
+        'player_list': player_list,
+        'links': get_links()
+    }
+    return render(request, 'leagues/standings.html', context)
+
+
+def old_pioneer_view(request, pk):
+    league = get_object_or_404(League, pk=pk)
+    player_list = get_standings(league)
+
+    context = {
+        'league_name': 'Pioneer Standings',
+        'player_list': player_list,
+        'links': get_links()
+    }
+    return render(request, 'leagues/standings.html', context)
+
+
 def cedh_view(request):
     player_dict = {}
-    for result in CedhResult.objects.filter(league=League.objects.filter(format='CEDH').order_by('-date_started').first()):
+    for result in CedhResult.objects.filter(
+            league=League.objects.filter(format='CEDH').order_by('-date_started').first()):
         try:
             player_dict[result.player.dci] += result.points
         except KeyError:
@@ -383,19 +413,29 @@ def player_details_view(request, pk):
     account = Player.objects.get(dci=pk)
     events = []
 
-    my_modern_events = EventResult.objects.filter(player=account, league__format='MOD', was_here=True).order_by('-event__date')
+    my_modern_events = EventResult.objects.filter(player=account, league__format='MOD', was_here=True).order_by(
+        '-event__date')
     if my_modern_events:
         modern_fb = get_league_badge(account, 'MOD')
         events.extend(get_sixty_card_event_cards(my_modern_events))
     else:
         modern_fb = None
 
-    my_legacy_events = EventResult.objects.filter(player=account, league__format='LEG', was_here=True).order_by('-event__date')
+    my_legacy_events = EventResult.objects.filter(player=account, league__format='LEG', was_here=True).order_by(
+        '-event__date')
     if my_legacy_events:
         legacy_fb = get_league_badge(account, 'LEG')
         events.extend(get_sixty_card_event_cards(my_legacy_events))
     else:
         legacy_fb = None
+
+    my_pioneer_events = EventResult.objects.filter(player=account, league__format='PIO', was_here=True).order_by(
+        '-event__date')
+    if my_pioneer_events:
+        pioneer_fb = get_league_badge(account, 'PIO')
+        events.extend(get_sixty_card_event_cards(my_pioneer_events))
+    else:
+        pioneer_fb = None
 
     my_cedh_events = CedhResult.objects.filter(player=account, was_here=True).order_by('-date')
     if my_cedh_events:
@@ -409,6 +449,7 @@ def player_details_view(request, pk):
         'legacy_view': legacy_fb,
         'modern_view': modern_fb,
         'cedh_view': cedh_fb,
+        'pioneer_view': pioneer_fb,
         'events': events,
         'links': get_links()
     }
@@ -446,7 +487,7 @@ def create_data_from_wer(xml_file, league):
         for round_of_magic in matches:
             round_number = round_of_magic.get('number')
             r, r_created = Round.objects.get_or_create(round_number=round_number,
-                                                     event=e)
+                                                       event=e)
             if r_created:
                 r.save()
             for match_of_magic in round_of_magic:
@@ -556,7 +597,6 @@ def set_most_recent_event_standings(league: League):
 
 @login_required
 def uploads_view(request):
-
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
         if form.is_valid():
