@@ -22,7 +22,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 SECRET_KEY = os.environ.get('SECRET_KEY', "in_testing")
 
-if os.environ.get('DEBUG_MODE').toLower() == 'false':
+if os.environ.get('DEBUG_MODE').lower() == 'false':
     debug = False
 else:
     debug = True
