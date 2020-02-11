@@ -444,6 +444,8 @@ def player_details_view(request, pk):
     else:
         cedh_fb = None
 
+    events.sort(key=lambda x: x.date, reverse=True)
+
     context = {
         'player': account,
         'legacy_view': legacy_fb,
@@ -510,11 +512,11 @@ def create_data_from_wer(xml_file, league):
                                                            round=r)
                 if m_created:
                     m.save()
-                if outcome is "1" or outcome is "3":  # win or bye
+                if outcome == "1" or outcome == "3":  # win or bye
                     dictionary_wins[int(player_1.dci)] += 1
                     if player_2:
                         dictionary_losses[int(player_2.dci)] += 1
-                elif outcome is "2":  # draw
+                elif outcome == "2":  # draw
                     dictionary_draws[int(player_1.dci)] += 1
                     dictionary_draws[int(player_2.dci)] += 1
                 else:  # 5 is a given loss/not here yet, not sure on 4

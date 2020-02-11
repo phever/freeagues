@@ -22,7 +22,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 SECRET_KEY = os.environ.get('SECRET_KEY', "in_testing")
 
-DEBUG = os.environ.get('DEBUG_MODE', False)
+DEBUG = os.environ.get('DEBUG_MODE', True)
 
 ALLOWED_HOSTS = ['*']
 # Application definition
