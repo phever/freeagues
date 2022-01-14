@@ -22,11 +22,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 SECRET_KEY = os.environ.get('SECRET_KEY', "in_testing")
 
-if os.environ.get('DEBUG_MODE').lower() == 'false':
-    debug = False
-else:
-    debug = True
-DEBUG = debug
+DEBUG = False
 
 ALLOWED_HOSTS = ['leagues.phoenixcomics.ca', '*.herokuapp.com', 'localhost', '127.0.0.1']
 # Application definition
@@ -123,6 +119,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
