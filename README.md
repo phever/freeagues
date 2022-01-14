@@ -2,6 +2,8 @@
 django website for the free phoenix leagues
 anyone is free to copy these for their own use, it includes a built-in WER results parser
 
+### NOTE: that the WER parser has not been updated to work with the new Web-App. ☹️
+
 *just the git repo for a django site being hosted through heroku @ leagues.phoenixcomics.ca*
 
 ### installation (from a terminal)
